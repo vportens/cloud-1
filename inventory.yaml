@@ -1,2 +1,4 @@
-[vm]
-34.163.213.88 # ip de la vm que je creer en ligne
+virtualmachines:
+  hosts: # les hosts qui appartiennent a mon groupe virtualmachines
+    vm: # alias de ma machine pour le playbook
+      ansible_host: 34.163.213.88 # ip de la vm qu'on lance
