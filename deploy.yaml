@@ -1,0 +1,15 @@
+---
+- name: Deployement app with docker compose
+  hosts: virtualmachines
+  become: yes
+  tasks:
+    - name: Transfer app to VM
+      synchronize:
+        src: ./App/
+        dest: ./        # on va se trouver dans le dossier /home/viporten dans la vm (pour la suite attention)
+
+
+#    - name: Install dependency
+
+    
+#    - name: 
