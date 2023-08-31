@@ -3,13 +3,37 @@
   hosts: virtualmachines
   become: yes
   tasks:
+    - name: Ensure rsync is installed
+      apt:
+        name: rsync
+        state: present
+
     - name: Transfer app to VM
       synchronize:
         src: ./App/
         dest: ./        # on va se trouver dans le dossier /home/viporten dans la vm (pour la suite attention)
 
+    - name: Install dependency
+      apt:
+        pkg:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - software-properties-common
+        state: present
 
-#    - name: Install dependency
+    - name: Ajouter la clé GPG de Docker
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
 
-    
+    - name: Ajouter le dépôt Docker
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable 
+        state: present
+
+    - name: Installer Docker
+      apt:
+        name: docker-ce
+        state: present
 #    - name: 
