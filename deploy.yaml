@@ -36,4 +36,25 @@
       apt:
         name: docker-ce
         state: present
+
+    - name: Récupérer le nom et l'architecture de la machine
+      command: uname -s -m
+      register: uname_output
+      changed_when: false
+
+    - name: Installer Docker Compose
+      get_url:
+        url: "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-{{ uname_output.stdout.split() | join('-') }}"
+        dest: /usr/local/bin/docker-compose
+        mode: '0755'
+
+    - name: Installer make
+      apt:
+        name: make
+        state: present
+        update_cache: yes
+
+    - name: Launch Makefile
+      command: make
+
 #    - name: 
