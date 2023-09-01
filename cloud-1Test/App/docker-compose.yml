@@ -10,11 +10,10 @@ services:
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
-      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
-      # à remplacer par votre email et votre domaine
-      - "--certificatesresolvers.myresolver.acme.email=viporten@student42.fr"
-      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      - ../server.crt:/certs/server.crt
+      - ../server.key:/certs/server.key
+      - "--providers.file.filename=/etc/traefik/traefik_dynamic.toml"  # <-- Cet argument
+
     ports:
       - "80:80"
       - "443:443"
@@ -24,11 +23,13 @@ services:
       - ../server.crt:/certs/server.crt
       - ../server.key:/certs/server.key
       - /path/on/host/acme.json:/acme.json
+      - ./traefik_dynamic.toml:/etc/traefik/traefik_dynamic.toml
+
     networks:
       - web
 
   wordpress:
-    image: wordpress:latest
+    image: wordpress
     container_name: wordpress
     environment:
       WORDPRESS_DB_HOST: db
@@ -40,8 +41,9 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.wordpress.rule=Host(`192.168.56.110`) && PathPrefix(`/wordpress`)"
       - "traefik.http.routers.wordpress.entrypoints=websecure"
-      - "traefik.http.routers.wordpress.tls.certresolver=myresolver"
       - "traefik.http.services.wordpress.loadbalancer.server.port=80"
+    ports:
+        - "8081:80"
     networks:
       - web
 
@@ -67,7 +69,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.phpmyadmin.rule=Host(`192.168.56.110`) && PathPrefix(`/phpmyadmin`)"
       - "traefik.http.routers.phpmyadmin.entrypoints=websecure"
-      - "traefik.http.routers.phpmyadmin.tls.certresolver=myresolver"
       - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
     networks:
       - web
