@@ -11,7 +11,11 @@ Vagrant.configure("2") do |config|
           vb.memory = memory # Need to up the size or vboxmanage return an error
           vb.cpus = cpus
         config.vm.synced_folder "./App", "/home/vagrant/App"
-
+        config.vm.network "forwarded_port", guest: 80, host: 80
+        config.vm.network "forwarded_port", guest: 8080, host: 8080
+        config.vm.network "forwarded_port", guest: 443, host: 443
+        config.vm.network "forwarded_port", guest: 8081, host: 8081
+    
         end
 
         config.vm.define SERVER_NAME do |viportenS|
