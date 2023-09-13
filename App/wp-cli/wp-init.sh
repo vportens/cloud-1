@@ -3,7 +3,7 @@
 sleep 20;
 
 wp core install --path="/var/www/html" \
---url="http://wpvp.${DOMAIN}" \
+--url="https://wpvp.${DOMAIN}" \
 --title="Local Wordpress By Docker Test viporten" \
 --admin_user=${ADMIN_USER} \
 --admin_password=${ADMIN_PASSWORD} \

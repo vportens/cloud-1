@@ -9,7 +9,11 @@ entryPoints:
   web:
     address: ':80'
     # (Optional) Redirect all HTTP requests to HTTPS
-
+    http:
+      redirections:
+        entryPoint:
+          to: web-secure
+          scheme: https
 
   web-secure:
     address: ':443'
@@ -18,3 +22,12 @@ entryPoints:
 
 # TODO: Customize your Cert Resolvers and Domains settings
 
+certificatesResolvers:
+  myresolver:
+    acme:
+      email: ${ACME_EMAIL} 
+      certificatesDuration: 24
+      storage: acme.json
+      httpChallenge:
+        # used during the challenge
+        entryPoint: web
