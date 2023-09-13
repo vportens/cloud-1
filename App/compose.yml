@@ -6,6 +6,8 @@ services:
     image: traefik:v3.0
     container_name: traefik
     command: --configFile=/etc/traefik/traefik.yml
+    environment:
+      DUCKDNS_TOKEN: ${DUCKDNS_TOKEN}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.entrypoints=web"
