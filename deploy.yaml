@@ -54,7 +54,14 @@
         state: present
         update_cache: yes
 
-    - name: Launch Makefile
-      command: make
+    - name: Get current username
+      command: whoami
+      register: current_user
+      changed_when: False
 
-#    - name: 
+    - name: Display current username (optional)
+      debug:
+        msg: "The current user is {{ local_user }}, if nothing is displayed please execute the programme this way : ansible-playbook -i inventory.yaml deploy.yaml -e \" local_user=$(whoami) \""
+
+    - name: Execute script
+      command: "/home/{{ local_user }}/launch.sh"
