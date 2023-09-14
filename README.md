@@ -7,4 +7,4 @@ Changer dans le fichier de confige ngnix : viporten_config
 server_name viporten.42.fr par l'ip de votre serveur
 
 ### Run 
-```ansible-playbook -i inventory.yaml deploy.yaml```
+```ansible-playbook -i inventory.yaml deploy.yaml -e "local_user=$(whoami)``
