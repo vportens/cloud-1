@@ -1,0 +1,65 @@
+---
+# file: roles/common/tasks/main.yml
+
+- name: Ensure rsync is installed
+  apt:
+    name: rsync
+    state: present
+
+- name: Transfer app to VM
+  synchronize:
+    src: ./App/
+    dest: ./        # on va se trouver dans le dossier /home/viporten dans la vm (pour la suite attention)
+
+- name: Install dependency
+  apt:
+    pkg:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - software-properties-common
+    state: present
+
+- name: Ajouter la clé GPG de Docker
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Ajouter le dépôt Docker
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable 
+    state: present
+
+- name: Installer Docker
+  apt:
+    name: docker-ce
+    state: present
+
+- name: Récupérer le nom et l'architecture de la machine
+  command: uname -s -m
+  register: uname_output
+  changed_when: false
+
+- name: Installer Docker Compose
+  get_url:
+    url: "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-{{ uname_output.stdout.split() | join('-') }}"
+    dest: /usr/local/bin/docker-compose
+    mode: '0755'
+
+- name: Installer make
+  apt:
+    name: make
+    state: present
+    update_cache: yes
+
+- name: Get current username
+  command: whoami
+  register: current_user
+  changed_when: False
+
+- name: Display current username (optional)
+  debug:
+    msg: "The current user is {{ local_user }}, if nothing is displayed please execute the programme this way : ansible-playbook -i inventory.yaml deploy.yaml -e \" local_user=$(whoami) \""
+
+- name: Execute script
+  command: "/home/{{ local_user }}/launch.shline 2, column "

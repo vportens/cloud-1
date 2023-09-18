@@ -1,0 +1,33 @@
+providers:
+  docker:
+    endpoint : "unix:///var/run/docker.sock"
+    network: wp_network
+api:
+  dashboard: true
+  insecure: true
+entryPoints:
+  web:
+    address: ':80'
+    # (Optional) Redirect all HTTP requests to HTTPS
+    http:
+      redirections:
+        entryPoint:
+          to: web-secure
+          scheme: https
+
+  web-secure:
+    address: ':443'
+
+# Certificat configuration
+
+# TODO: Customize your Cert Resolvers and Domains settings
+
+certificatesResolvers:
+  myresolver:
+    acme:
+      email: ${ACME_EMAIL} 
+      certificatesDuration: 24
+      storage: acme.json
+      httpChallenge:
+        # used during the challenge
+        entryPoint: web
