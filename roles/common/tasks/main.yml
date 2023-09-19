@@ -61,5 +61,11 @@
   debug:
     msg: "The current user is {{ local_user }}, if nothing is displayed please execute the programme this way : ansible-playbook -i inventory.yaml deploy.yaml -e \" local_user=$(whoami) \""
 
+- name: Crée le fichier acme.json s'il n'existe pas
+  ansible.builtin.file:
+    path: /home/{{ local_user }}/acme.json
+    state: touch
+    mode: '0600'
+
 - name: Execute script
   command: "/home/{{ local_user }}/launch.sh"
