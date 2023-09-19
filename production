@@ -1,4 +1,4 @@
 virtualmachines:
   hosts: # les hosts qui appartiennent a mon groupe virtualmachines
     vm: # alias de ma machine pour le playbook
-      ansible_host: 34.163.167.155 # ip de la vm qu'on lance
+      ansible_host: 34.163.200.18 # ip de la vm qu'on lance

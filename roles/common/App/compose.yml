@@ -8,12 +8,12 @@ services:
     command: --configFile=/etc/traefik/traefik.yml
     environment:
       DUCKDNS_TOKEN: ${DUCKDNS_TOKEN}
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.traefik.entrypoints=web"
-      - "traefik.exposedbydefault=true"
-      - "traefik.http.routers.traefik.service=api@internal"
-      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+#    labels: # enable dashboard traefik
+#      - "traefik.enable=true"
+#      - "traefik.http.routers.traefik.entrypoints=web"
+#      - "traefik.exposedbydefault=true"
+#      - "traefik.http.routers.traefik.service=api@internal"
+#      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
