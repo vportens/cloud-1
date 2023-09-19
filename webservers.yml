@@ -1,5 +1,6 @@
 ---
 # file: webservers.yml
 - hosts: virtualmachines 
+  become: yes 
   roles:
     - common

@@ -38,6 +38,11 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "--password=rootpass"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - db:/var/lib/mysql
     networks:
@@ -48,8 +53,8 @@ services:
     container_name: wordpress_cli
     user: root
     depends_on:
-      - db
-      - wordpress
+      db :
+        condition: service_healthy
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: ${MYSQL_USER}
@@ -60,11 +65,12 @@ services:
       ADMIN_EMAIL: ${ADMIN_EMAIL}
       DOMAIN: ${DOMAIN}
     command: /wp-cli/wp-init.sh
-      
     volumes:
       - wordpress:/var/www/html
       - ./themes/yith-wonder.zip:/var/www/html/wp-content/themes/yith-wonder.zip
       - ./wp-cli:/wp-cli
+    labels:
+      - "traefik.enable=false"
     networks:
       - wp_network
 

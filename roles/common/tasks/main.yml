@@ -8,7 +8,7 @@
 
 - name: Transfer app to VM
   synchronize:
-    src: ./App/
+    src: ../App/
     dest: ./        # on va se trouver dans le dossier /home/viporten dans la vm (pour la suite attention)
 
 - name: Install dependency
@@ -62,4 +62,4 @@
     msg: "The current user is {{ local_user }}, if nothing is displayed please execute the programme this way : ansible-playbook -i inventory.yaml deploy.yaml -e \" local_user=$(whoami) \""
 
 - name: Execute script
-  command: "/home/{{ local_user }}/launch.shline 2, column "
+  command: "/home/{{ local_user }}/launch.sh"

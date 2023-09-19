@@ -25,8 +25,7 @@ entryPoints:
 certificatesResolvers:
   myresolver:
     acme:
-      email: ${ACME_EMAIL} 
-      certificatesDuration: 24
+      email: viporten@student42.fr
       storage: acme.json
       httpChallenge:
         # used during the challenge
