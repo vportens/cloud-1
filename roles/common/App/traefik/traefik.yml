@@ -25,7 +25,7 @@ entryPoints:
 certificatesResolvers:
   myresolver:
     acme:
-      email: viporten@student42.fr
+      email: exemple@email.fr
       storage: acme.json
       httpChallenge:
         # used during the challenge
